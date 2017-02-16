@@ -1,0 +1,60 @@
+{% extends 'default.html'%}
+
+{% block content %}
+       <!--left-->
+         <div class="left" id="guestbook">
+           <div class="weizi">
+           <div class="wz_text">当前位置：<a href="#">首页</a>><h1>留言板</h1></div>
+           </div>
+           <div class="g_content">
+                <div id="new" style="margin-left:50px">
+        <form action="{% url 'guestbook_save' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-row field-nickname">
+                <label for="id_nickname" class="required">Nickname</label><br>
+                <input type="text" name="nickname" style="border: 1px solid #ccc;padding: 5px 6px;" maxlength="20" required="required">
+            </div>
+            <div class="form-row field-email">
+                <label for="id_email" class="required">Email address</label><br>
+                <input type="email" name="email" style="border: 1px solid #ccc;padding: 5px 6px;" maxlength="20" required="required">
+            </div>
+            <div class="form-row field-body">
+          <label for="id_content" class="required">Content</label><br>
+          <textarea name="content" style="border: 1px solid #ccc;" rows="10"  cols="50" required="required"></textarea>
+        </div>
+        <button type="submit" class="default" style="margin-left:145px;background: #D0E0D5;border: none;font-size: 13px;padding: 10px 15px;color: #fff;border-radius: 4px;line-height: 15px;">发表</button>
+      </form>
+    </div>
+</div>
+<script>  
+function reply(a) {  
+  var nickname = a.parentNode.parentNode.firstChild.nextSibling.getAttribute('data');
+  var textArea = document.getElementById('newFormContent');
+  textArea.innerHTML = '@'+nickname+' ';
+}
+</script>
+<div class="content_text2">
+    <div class="conmments" style="margin-top: 100px;">
+        {% for message in messages %}
+            
+            <div class="one" style="border-top:solid 20px #efefef;padding:5px 20px;">
+                <div class="nickname" data="{{message.nickname}}">
+                    <a href="#">
+                    <h3>{{message.nickname}}</h3>
+                    </a>
+                    <h6>{{message.datetime|date:"m-d H:i"}}</h6>
+                </div>
+                <div class="content">
+                    <p style="padding:20px;">
+                        {{message.content}}
+                    </p>
+                </div>
+                <div calss="reply" style="text-align:right;padding:5px;">
+                <a href="#new" onclick="reply(this);">回复</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div> 
+</div>
+</div>
+{% endblock %}
