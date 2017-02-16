@@ -1,0 +1,80 @@
+{% extends 'default.html'%}
+
+{% block content %}
+<div class="left" id="c_left">
+    <div class="content_text2">
+    {%for a in aarticle%}
+   <center><h2>{{a.title}}</h2></center>
+    <hr style="border: 1px dashed #999;margin-top:15px;">
+    <div id="date" style="text-align:right;margin-top:10px;margin-right:15px">
+        {{a.datetime|date:"y年m月d日"}}
+    </div>
+    {% if a.image %}
+        <img src="/media/{{a.image}}" width="400"  height="246" alt="" style="margin:auto;margin-top:20px;">
+    {% endif %}
+    <div id="dd_text_1" style="padding:50px;">
+    <p>
+        {{a.body}}
+    </p>
+    </div>
+    <hr style="border: 1px dashed #999;margin-top:10px;">
+    <div id="comments" style="margin-bottom:100px;margin-top:25px;">
+    
+    <div id="new" style="margin-left:50px">
+        <form action="{% url 'comment' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="article_id" value="{{a.id}}">
+            <div class="form-row field-nickname">
+                <label for="id_nickname" class="required">Nickname</label><br>
+                <input type="text" name="nickname" style="border: 1px solid #ccc;padding: 5px 6px;" maxlength="20" required="required">
+            </div>
+            <div class="form-row field-email">
+                <label for="id_email" class="required">Email address</label><br>
+                <input type="email" name="email" style="border: 1px solid #ccc;padding: 5px 6px;" maxlength="20" required="required">
+            </div>
+            <div class="form-row field-website">
+                <label for="id_website">Home page</label><br>
+                <input type="text" style="border: 1px solid #ccc;padding: 5px 6px;" name="website" maxlength="20">
+            </div>
+            <div class="form-row field-body">
+          <label for="id_content" class="required">Content</label><br>
+          <textarea name="content" style="border: 1px solid #ccc;" rows="10"  cols="50" required="required"></textarea>
+        </div>
+        <button type="submit" class="default" style="margin-left:145px;background: #D0E0D5;border: none;font-size: 13px;padding: 10px 15px;color: #fff;border-radius: 4px;line-height: 15px;">发表</button>
+      </form>
+    </div>
+</div>
+{% endfor %}
+<script>  
+function reply(a) {  
+  var nickname = a.parentNode.parentNode.firstChild.nextSibling.getAttribute('data');
+  var textArea = document.getElementById('newFormContent');
+  textArea.innerHTML = '@'+nickname+' ';
+}
+</script>
+
+    <div class="conmments" style="margin-top: 100px;">
+        {% for article_comment in article_comments %}
+            
+            <div class="one" style="border-top:solid 20px #efefef;padding:5px 20px;">
+                <div class="nickname" data="{{article_comment.nickname}}">
+       
+                    <a href="{{article_comment.website}}">
+                    <h3>{{article_comment.nickname}}</h3>
+                    </a>
+                    <h6>{{article_comment.datetime|date:"m-d H:i"}}</h6>
+                </div>
+                <div class="content">
+                    <p style="padding:20px;">
+                        {{article_comment.content}}
+                    </p>
+                </div>
+                <div calss="reply" style="text-align:right;padding:5px;">
+                <a href="#new" onclick="reply(this);">回复</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+</div>
+{% endblock %}

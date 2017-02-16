@@ -1,0 +1,29 @@
+{% extends 'default.html' %}
+
+{% block content %}
+    <!--content start-->
+    <div id="content">
+       <!--left-->
+         <div class="left" id="riji">
+           <div class="weizi">
+           <div class="wz_text">当前位置：<a href="#">首页</a>><h1>个人日记</h1></div>
+           </div>
+           <div class="rj_content">
+                <!--时光-->
+            {% for diary in diaries %}   
+              <div class="shiguang animated bounceIn">
+                <div class="left sg_ico">
+                <img src="/media/{{diary.image}}" width="120" height="120" alt=""/>
+                </div>
+                <div class="right sg_text">
+                <img src="/static/images/left.png" width="13" height="16" alt="左图标"/>
+                    {{diary.body}}
+                </div>
+                <div class="clear"></div>
+              </div>
+            {% endfor%}
+              <!--时光 end-->    
+           </div>
+         </div>
+         <!--end left -->
+{% endblock %}
