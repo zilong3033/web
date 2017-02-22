@@ -1,1 +1,1 @@
-this is web projects
+web projects
